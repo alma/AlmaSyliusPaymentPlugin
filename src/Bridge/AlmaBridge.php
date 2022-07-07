@@ -6,6 +6,7 @@ namespace Alma\SyliusPaymentPlugin\Bridge;
 
 
 use Alma\API\Client;
+use Alma\API\Endpoints\Results\Eligibility;
 use Alma\API\Entities\Instalment;
 use Alma\API\Entities\Merchant;
 use Alma\API\Entities\Payment;
@@ -23,7 +24,7 @@ use Sylius\Component\Core\Model\PaymentInterface;
 final class AlmaBridge implements AlmaBridgeInterface
 {
     /**
-     * @var GatewayConfig
+     * @var null|GatewayConfig
      */
     private $gatewayConfig = null;
 
@@ -47,19 +48,33 @@ final class AlmaBridge implements AlmaBridgeInterface
         $this->paymentDataBuilder = $paymentDataBuilder;
     }
 
+    /**
+     * @param Eligibility|Eligibility[] $eligibility
+     *
+     * @return Eligibility[]
+     */
+    private function formatEligibility($eligibility): array
+    {
+        if ($eligibility instanceof Eligibility) {
+            return [$eligibility];
+        }
+
+        return $eligibility;
+    }
+
     public function initialize(ArrayObject $config): void
     {
         self::$almaClient = null;
         $this->gatewayConfig = new GatewayConfig($config);
     }
 
-    public function getDefaultClient(?string $mode = null): Client
+    public function getDefaultClient(?string $mode = null): ?Client
     {
-        if ($mode === null) {
+        if ($mode === null && $this->gatewayConfig) {
             $mode = $this->gatewayConfig->getApiMode();
         }
 
-        if (!self::$almaClient) {
+        if (!self::$almaClient && $mode && $this->gatewayConfig) {
             self::$almaClient = self::createClientInstance(
                 $this->gatewayConfig->getActiveApiKey(),
                 $mode,
@@ -110,9 +125,9 @@ final class AlmaBridge implements AlmaBridgeInterface
     }
 
     /**
-     * @return GatewayConfig
+     * @return GatewayConfig|null
      */
-    public function getGatewayConfig(): GatewayConfig
+    public function getGatewayConfig(): ?GatewayConfig
     {
         return $this->gatewayConfig;
     }
@@ -124,16 +139,20 @@ final class AlmaBridge implements AlmaBridgeInterface
     {
         $builder = $this->paymentDataBuilder;
         $builder->addBuilder(function (array $data, PaymentInterface $payment) use ($installmentsCounts): array {
-            $data['payment'] = array_merge($data['payment'], [
-                "installments_count" => $installmentsCounts
-            ]);
+            if (is_array($data['payment'])) {
+                $data['payment'] += ["installments_count" => $installmentsCounts];
+            }
 
             return $data;
         });
 
         $alma = $this->getDefaultClient();
         try {
-            return $alma->payments->eligibility($builder([], $payment), true);
+            if ($alma) {
+                $eligibility = $alma->payments->eligibility($builder([], $payment), true);
+
+                return $this->formatEligibility($eligibility);
+            }
         } catch (RequestError $e) {
             $this->logger->error("[Alma] Eligibility call failed with error: " . $e->getMessage());
         }
@@ -152,11 +171,21 @@ final class AlmaBridge implements AlmaBridgeInterface
         /** @var int $pid */
         $pid = $payment->getId();
 
+        $alma      = $this->getDefaultClient();
         try {
-            $paymentData = $this->getDefaultClient()->payments->fetch($almaPaymentId);
+            if ($alma) {
+                $paymentData = $alma->payments->fetch($almaPaymentId);
+            }
         } catch (RequestError $e) {
             $this->logger->error("[Alma] Could not fetch payment $almaPaymentId to validate payment $pid");
             throw $e;
+        }
+
+        if (!$paymentData) {
+            $error = "PaymentData not found for payment $pid";
+            $this->logger->error("[Alma] $error");
+
+            throw new PaymentException($error);
         }
 
         if ($pid !== $paymentData->custom_data['payment_id']) {
