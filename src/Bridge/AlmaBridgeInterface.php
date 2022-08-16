@@ -28,7 +28,7 @@ interface AlmaBridgeInterface
 
     function getGatewayConfig(): GatewayConfig;
 
-    function getDefaultClient(?string $mode = null): ?Client;
+    function getDefaultClient(?string $api_root = null): ?Client;
     static function createClientInstance(string $apiKey, string $mode, LoggerInterface $logger): ?Client;
 
     function getMerchantInfo(): ?Merchant;

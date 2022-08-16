@@ -48,7 +48,7 @@ final class RenderInPagePaymentAction implements ActionInterface, ApiAwareInterf
             [
                 'payload' => $details[AlmaBridgeInterface::DETAILS_KEY_PAYLOAD],
                 'merchantId' => $config->getMerchantId(),
-                'apiMode' => $config->getApiMode(),
+                'urlRoot' => $config->getUrlRoot(),
             ]
         ));
 

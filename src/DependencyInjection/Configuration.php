@@ -12,7 +12,15 @@ final class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('alma_sylius_payment_plugin');
-        $rootNode = $treeBuilder->getRootNode();
+        $treeBuilder->getRootNode()
+            ->children()
+                ->scalarNode('api_key')->end()
+                ->scalarNode('merchant_id')->end()
+                ->scalarNode('root_url')
+                    ->defaultValue('https://api.sandbox.getalma.eu')
+                ->end()
+            ->end()
+        ;
 
         return $treeBuilder;
     }

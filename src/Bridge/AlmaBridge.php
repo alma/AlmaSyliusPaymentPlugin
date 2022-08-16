@@ -53,16 +53,16 @@ final class AlmaBridge implements AlmaBridgeInterface
         $this->gatewayConfig = new GatewayConfig($config);
     }
 
-    public function getDefaultClient(?string $mode = null): Client
+    public function getDefaultClient(?string $api_root = null): Client
     {
-        if ($mode === null) {
-            $mode = $this->gatewayConfig->getApiMode();
+        if ($api_root === null) {
+            $api_root = $this->gatewayConfig->getUrlRoot();
         }
 
         if (!self::$almaClient) {
             self::$almaClient = self::createClientInstance(
-                $this->gatewayConfig->getActiveApiKey(),
-                $mode,
+                $this->gatewayConfig->getApiKey(),
+                $api_root,
                 $this->logger
             );
         }
@@ -70,14 +70,14 @@ final class AlmaBridge implements AlmaBridgeInterface
         return self::$almaClient;
     }
 
-    public static function createClientInstance(string $apiKey, string $mode, LoggerInterface $logger): ?Client
+    public static function createClientInstance(string $apiKey, string $api_root, LoggerInterface $logger): ?Client
     {
         /** @var Client|null $alma */
         $alma = null;
 
         try {
             $alma = new Client($apiKey, [
-                'mode' => $mode,
+                'api_root' => $api_root,
                 'logger' => $logger
             ]);
 

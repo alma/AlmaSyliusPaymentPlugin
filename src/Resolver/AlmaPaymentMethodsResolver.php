@@ -76,7 +76,7 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
             $config = $this->getAlmaGatewayConfig($method);
 
             // Group Alma methods by merchant ID & API mode to batch eligibility calls
-            $groupKey = $config->getMerchantId() . ':' . $config->getApiMode();
+            $groupKey = $config->getMerchantId() . ':' . $config->getApiKey();
             $almaMethods->defaults([$groupKey => []]);
 
             /** @var PaymentMethodInterface[] $group */

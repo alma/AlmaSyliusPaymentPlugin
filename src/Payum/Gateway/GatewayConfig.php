@@ -20,9 +20,14 @@ class GatewayConfig implements GatewayConfigInterface
         $this->config = $config;
     }
 
-    function getApiMode(): string
+    // function getApiMode(): string
+    // {
+    //     return $this->config[self::CONFIG_API_MODE];
+    // }
+
+    function getApiKey(): string
     {
-        return $this->config[self::CONFIG_API_MODE];
+        return $this->config[self::CONFIG_API_KEY];
     }
 
     function getMerchantId(): string
@@ -30,20 +35,25 @@ class GatewayConfig implements GatewayConfigInterface
         return $this->config[self::CONFIG_MERCHANT_ID];
     }
 
-    function getActiveApiKey(): string
+    function getUrlRoot(): string
     {
-        return ($this->getApiMode() == AlmaClient::LIVE_MODE ? $this->getLiveApiKey() : $this->getTestApiKey());
+        return $this->config[self::CONFIG_URL_ROOT];
     }
 
-    function getLiveApiKey(): string
-    {
-        return $this->config[self::CONFIG_LIVE_API_KEY];
-    }
+    // function getActiveApiKey(): string
+    // {
+    //     return ($this->getApiMode() == AlmaClient::LIVE_MODE ? $this->getLiveApiKey() : $this->getTestApiKey());
+    // }
 
-    function getTestApiKey(): string
-    {
-        return $this->config[self::CONFIG_TEST_API_KEY];
-    }
+    // function getLiveApiKey(): string
+    // {
+    //     return $this->config[self::CONFIG_LIVE_API_KEY];
+    // }
+
+    // function getTestApiKey(): string
+    // {
+    //     return $this->config[self::CONFIG_TEST_API_KEY];
+    // }
 
     function getInstallmentsCount(): int
     {

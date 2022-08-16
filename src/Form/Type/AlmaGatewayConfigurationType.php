@@ -56,28 +56,28 @@ final class AlmaGatewayConfigurationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add(GatewayConfigInterface::CONFIG_LIVE_API_KEY, TextType::class, [
-                'label' => 'alma_sylius_payment_plugin.config.live_api_key_label',
-                'help' => $this->translator->trans('alma_sylius_payment_plugin.config.find_api_keys_in_dashboard'),
-                'help_html' => true,
-            ])
-            ->add(GatewayConfigInterface::CONFIG_TEST_API_KEY, TextType::class, [
-                'label' => 'alma_sylius_payment_plugin.config.test_api_key_label',
-                'help' => $this->translator->trans('alma_sylius_payment_plugin.config.find_api_keys_in_dashboard'),
-                'help_html' => true,
-            ])
-            ->add(
-                GatewayConfigInterface::CONFIG_API_MODE,
-                ChoiceType::class,
-                [
-                    'choices' => [
-                        $this->translator->trans('alma_sylius_payment_plugin.api.live_mode') => AlmaClient::LIVE_MODE,
-                        $this->translator->trans('alma_sylius_payment_plugin.api.test_mode') => AlmaClient::TEST_MODE,
-                    ],
-                    'label' => $this->translator->trans('alma_sylius_payment_plugin.config.api_mode_label'),
-                    'help' => $this->translator->trans('alma_sylius_payment_plugin.config.api_mode_tip'),
-                ]
-            )
+            // ->add(GatewayConfigInterface::CONFIG_LIVE_API_KEY, TextType::class, [
+            //     'label' => 'alma_sylius_payment_plugin.config.live_api_key_label',
+            //     'help' => $this->translator->trans('alma_sylius_payment_plugin.config.find_api_keys_in_dashboard'),
+            //     'help_html' => true,
+            // ])
+            // ->add(GatewayConfigInterface::CONFIG_TEST_API_KEY, TextType::class, [
+            //     'label' => 'alma_sylius_payment_plugin.config.test_api_key_label',
+            //     'help' => $this->translator->trans('alma_sylius_payment_plugin.config.find_api_keys_in_dashboard'),
+            //     'help_html' => true,
+            // ])
+            // ->add(
+            //     GatewayConfigInterface::CONFIG_API_MODE,
+            //     ChoiceType::class,
+            //     [
+            //         'choices' => [
+            //             $this->translator->trans('alma_sylius_payment_plugin.api.live_mode') => AlmaClient::LIVE_MODE,
+            //             $this->translator->trans('alma_sylius_payment_plugin.api.test_mode') => AlmaClient::TEST_MODE,
+            //         ],
+            //         'label' => $this->translator->trans('alma_sylius_payment_plugin.config.api_mode_label'),
+            //         'help' => $this->translator->trans('alma_sylius_payment_plugin.config.api_mode_tip'),
+            //     ]
+            // )
             ->add(
                 GatewayConfigInterface::CONFIG_INSTALLMENTS_COUNT,
                 ChoiceType::class,
@@ -107,8 +107,8 @@ final class AlmaGatewayConfigurationType extends AbstractType
                     ],
                     'label' => $this->translator->trans('alma_sylius_payment_plugin.config.payment_page_mode_label'),
                 ]
-            )
-            ->add(GatewayConfigInterface::CONFIG_MERCHANT_ID, HiddenType::class);
+                );
+            // ->add(GatewayConfigInterface::CONFIG_MERCHANT_ID, HiddenType::class);
 
         $builder
             ->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit'])
@@ -143,7 +143,7 @@ final class AlmaGatewayConfigurationType extends AbstractType
         /** @var string $apiKey */
         $apiKey = $data[GatewayConfigInterface::CONFIG_API_MODE] === AlmaClient::LIVE_MODE
             ? $data[GatewayConfigInterface::CONFIG_LIVE_API_KEY]
-            : $data[GatewayConfigInterface::CONFIG_TEST_API_KEY];;
+            : $data[GatewayConfigInterface::CONFIG_TEST_API_KEY];
 
         if ($apiKey == null || trim($apiKey) == "") {
             $this->errors[$apiKeyConfigKey] = 'alma_sylius_payment_plugin.errors.empty_api_key';

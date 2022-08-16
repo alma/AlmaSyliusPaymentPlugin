@@ -9,10 +9,13 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 interface GatewayConfigInterface {
     const ALLOWED_CURRENCY_CODES = ['EUR'];
 
+    const CONFIG_API_KEY = 'api_key';
     const CONFIG_MERCHANT_ID = 'merchant_id';
-    const CONFIG_LIVE_API_KEY = 'live_api_key';
-    const CONFIG_TEST_API_KEY = 'test_api_key';
-    const CONFIG_API_MODE = 'api_mode';
+    const CONFIG_URL_ROOT = 'root_url';
+
+    // const CONFIG_LIVE_API_KEY = 'live_api_key';
+    // const CONFIG_TEST_API_KEY = 'test_api_key';
+    // const CONFIG_API_MODE = 'api_mode';
     const CONFIG_INSTALLMENTS_COUNT = 'installments_count';
     const CONFIG_PAYMENT_PAGE_MODE = 'payment_page_mode';
     const CONFIG_PAYMENT_FORM_TEMPLATE = 'payum.template.payment_form_template';
@@ -22,13 +25,15 @@ interface GatewayConfigInterface {
 
     public function __construct(ArrayObject $config);
 
-    function getApiMode(): string;
+    // function getApiMode(): string;
 
+    function getApiKey(): string;
     function getMerchantId(): string;
+    function getUrlRoot(): string;
 
-    function getActiveApiKey(): string;
-    function getLiveApiKey(): string;
-    function getTestApiKey(): string;
+    // function getActiveApiKey(): string;
+    // function getLiveApiKey(): string;
+    // function getTestApiKey(): string;
 
     function getInstallmentsCount(): int;
 
