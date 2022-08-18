@@ -4,9 +4,9 @@
 <script>
     ;(function() {
         var paymentData = {{ payload | json_encode() | raw }};
-        {% set mode = 'test' %}
-        {% if urlRoot == 'https://api.getalma.eu' %}
-            {% set mode = 'live' %}
+        {% set mode = 'live' %}
+        {% if urlRoot == 'https://api.sandbox.getalma.eu' %}
+            {% set mode = 'test' %}
         {% endif %}
         var fragments = new Alma.Fragments("{{ merchantId }}", { mode: "{{ mode }}" });
 
