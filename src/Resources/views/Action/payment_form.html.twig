@@ -4,7 +4,11 @@
 <script>
     ;(function() {
         var paymentData = {{ payload | json_encode() | raw }};
-        var fragments = new Alma.Fragments("{{ merchantId }}", { mode: "{{ urlRoot }}" });
+        {% set mode = 'test' %}
+        {% if urlRoot == 'https://api.getalma.eu' %}
+            {% set mode = 'live' %}
+        {% endif %}
+        var fragments = new Alma.Fragments("{{ merchantId }}", { mode: "{{ mode }}" });
 
         fragments.createPaymentForm(paymentData).mount('#payment-form');
     })();
