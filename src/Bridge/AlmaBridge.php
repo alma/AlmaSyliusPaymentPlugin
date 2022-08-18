@@ -6,6 +6,7 @@ namespace Alma\SyliusPaymentPlugin\Bridge;
 
 
 use Alma\API\Client;
+use Alma\API\Endpoints\Results\Eligibility;
 use Alma\API\Entities\Instalment;
 use Alma\API\Entities\Merchant;
 use Alma\API\Entities\Payment;
@@ -133,7 +134,11 @@ final class AlmaBridge implements AlmaBridgeInterface
 
         $alma = $this->getDefaultClient();
         try {
-            return $alma->payments->eligibility($builder([], $payment), true);
+            $eligibility = $alma->payments->eligibility($builder([], $payment), true);
+            if ($eligibility instanceof Eligibility) {
+                $eligibility = [$eligibility];
+            }
+            return $eligibility;
         } catch (RequestError $e) {
             $this->logger->error("[Alma] Eligibility call failed with error: " . $e->getMessage());
         }
