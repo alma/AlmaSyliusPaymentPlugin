@@ -17,7 +17,6 @@ final class AlmaSyliusPaymentExtension extends Extension
         $this->processConfiguration($this->getConfiguration([], $container), $config);
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-        $loader->load('alma.yml');
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): ConfigurationInterface
