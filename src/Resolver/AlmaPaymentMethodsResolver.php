@@ -186,6 +186,6 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
 
     private function getAlmaGatewayConfig(PaymentMethodInterface $method): AlmaGatewayConfigInterface
     {
-        return new GatewayConfig($this->getGatewayConfigData($method));
+        return $this->almaBridge->buildGatewayConfig($this->getGatewayConfigData($method));
     }
 }

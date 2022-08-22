@@ -9,9 +9,9 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 interface GatewayConfigInterface {
     const ALLOWED_CURRENCY_CODES = ['EUR'];
 
-    const CONFIG_API_KEY = 'ALMA_API_KEY';
-    const CONFIG_MERCHANT_ID = 'ALMA_MERCHANT_ID';
-    const CONFIG_URL_ROOT = 'ALMA_ROOT_URL';
+    const CONFIG_API_KEY = 'apiKey';
+    const CONFIG_MERCHANT_ID = 'merchantId';
+    const CONFIG_URL_ROOT = 'rootUrl';
 
     const CONFIG_INSTALLMENTS_COUNT = 'installments_count';
     const CONFIG_PAYMENT_PAGE_MODE = 'payment_page_mode';

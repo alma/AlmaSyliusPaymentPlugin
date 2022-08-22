@@ -1,5 +1,0 @@
-parameters:
-  alma_sylius_payment_plugin:
-    api_key: '%env(string:ALMA_API_KEY)%'
-    merchant_id: '%env(string:ALMA_MERCHANT_ID)%'
-    root_url: '%env(string:ALMA_ROOT_URL)%'

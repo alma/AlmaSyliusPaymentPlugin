@@ -22,17 +22,17 @@ class GatewayConfig implements GatewayConfigInterface
 
     function getApiKey(): string
     {
-        return $_ENV[self::CONFIG_API_KEY];
+        return $this->config[self::CONFIG_API_KEY];
     }
 
     function getMerchantId(): string
     {
-        return $_ENV[self::CONFIG_MERCHANT_ID];
+        return $this->config[self::CONFIG_MERCHANT_ID];
     }
 
     function getUrlRoot(): string
     {
-        return $_ENV[self::CONFIG_URL_ROOT];
+        return $this->config[self::CONFIG_URL_ROOT];
     }
 
     function getInstallmentsCount(): int

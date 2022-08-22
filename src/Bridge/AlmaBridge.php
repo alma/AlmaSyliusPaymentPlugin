@@ -42,16 +42,29 @@ final class AlmaBridge implements AlmaBridgeInterface
      */
     private $paymentDataBuilder;
 
-    public function __construct(LoggerInterface $logger, PaymentDataBuilderInterface $paymentDataBuilder)
+    public function __construct(LoggerInterface $logger, PaymentDataBuilderInterface $paymentDataBuilder, $apiKey, $merchantId, $rootUrl)
     {
         $this->logger = $logger;
         $this->paymentDataBuilder = $paymentDataBuilder;
+        $this->apiKey = $apiKey;
+        $this->merchantId = $merchantId;
+        $this->rootUrl = $rootUrl;
     }
 
     public function initialize(ArrayObject $config): void
     {
         self::$almaClient = null;
-        $this->gatewayConfig = new GatewayConfig($config);
+        
+        $this->gatewayConfig = $this->buildGatewayConfig($config);
+    }
+
+    public function buildGatewayConfig($config)
+    {
+        $config['apiKey'] = $this->apiKey;
+        $config['merchantId'] = $this->merchantId;
+        $config['rootUrl'] = $this->rootUrl;
+
+        return new GatewayConfig($config);
     }
 
     public function getDefaultClient(?string $api_root = null): Client

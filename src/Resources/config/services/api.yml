@@ -5,5 +5,8 @@ services:
     arguments:
       $logger: '@logger'
       $paymentDataBuilder: '@alma_sylius_payment_plugin.payment_data_builder'
+      $apiKey: '%env(string:ALMA_API_KEY)%'
+      $merchantId: '%env(string:ALMA_MERCHANT_ID)%'
+      $rootUrl: '%env(string:ALMA_ROOT_URL)%'
 
   Alma\SyliusPaymentPlugin\Bridge\AlmaBridgeInterface: '@alma_sylius_payment_plugin.bridge'
