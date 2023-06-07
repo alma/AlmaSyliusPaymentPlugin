@@ -47,7 +47,11 @@ class GatewayConfig implements GatewayConfigInterface
 
     function getInstallmentsCount(): int
     {
-        return (int)$this->config[self::CONFIG_INSTALLMENTS_COUNT];
+        $value = $this->config[self::CONFIG_INSTALLMENTS_COUNT];
+        if (\is_string($value)) {
+            $value = str_replace('c_', '', $value);
+        }
+        return (int) $value;
     }
 
     function getPaymentFormTemplate(): string

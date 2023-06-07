@@ -17,7 +17,7 @@ final class AlmaGatewayFactory extends GatewayFactory
         $config->defaults([
             'payum.factory_name' => self::FACTORY_NAME,
             'payum.factory_title' => 'Alma Payments',
-            GatewayConfigInterface::CONFIG_INSTALLMENTS_COUNT => 3,
+            GatewayConfigInterface::CONFIG_INSTALLMENTS_COUNT => 'c_3',
             GatewayConfigInterface::CONFIG_PAYMENT_PAGE_MODE => GatewayConfigInterface::PAYMENT_PAGE_MODE_IN_PAGE,
             GatewayConfigInterface::CONFIG_PAYMENT_FORM_TEMPLATE => '@AlmaSyliusPaymentPlugin/Action/payment_form.html.twig',
         ]);

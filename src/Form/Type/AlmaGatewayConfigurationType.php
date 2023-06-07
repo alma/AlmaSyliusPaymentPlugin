@@ -122,7 +122,7 @@ final class AlmaGatewayConfigurationType extends AbstractType
 
         // Set default values for the different form fields (useful for gateway creations)
         $data->defaults([
-            GatewayConfigInterface::CONFIG_INSTALLMENTS_COUNT => 3,
+            GatewayConfigInterface::CONFIG_INSTALLMENTS_COUNT => 'c_3',
             GatewayConfigInterface::CONFIG_PAYMENT_PAGE_MODE => GatewayConfigInterface::PAYMENT_PAGE_MODE_IN_PAGE,
             GatewayConfigInterface::CONFIG_API_MODE => AlmaClient::TEST_MODE
         ]);
