@@ -82,13 +82,13 @@ final class AlmaGatewayConfigurationType extends AbstractType
                 GatewayConfigInterface::CONFIG_INSTALLMENTS_COUNT,
                 ChoiceType::class,
                 [
-                    'choices' => [
+                    'choices' => [ // Change the value type from int to string to allow encrypt this value.
                         $this->translator->trans('alma_sylius_payment_plugin.config.installments_count_choice_label',
-                            ['%installments_count%' => 2]) => 2,
+                            ['%installments_count%' => 2]) => 'c_2',
                         $this->translator->trans('alma_sylius_payment_plugin.config.installments_count_choice_label',
-                            ['%installments_count%' => 3]) => 3,
+                            ['%installments_count%' => 3]) => 'c_3',
                         $this->translator->trans('alma_sylius_payment_plugin.config.installments_count_choice_label',
-                            ['%installments_count%' => 4]) => 4,
+                            ['%installments_count%' => 4]) => 'c_4',
                     ],
                     'label' => $this->translator->trans('alma_sylius_payment_plugin.config.installments_count_label'),
                 ]
