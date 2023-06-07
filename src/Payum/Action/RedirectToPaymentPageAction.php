@@ -20,6 +20,7 @@ use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -40,11 +41,11 @@ final class RedirectToPaymentPageAction implements ActionInterface, ApiAwareInte
      */
     private $session;
 
-    public function __construct(LoggerInterface $logger, SessionInterface $session)
+    public function __construct(LoggerInterface $logger, RequestStack $requestStack)
     {
         $this->apiClass = AlmaBridge::class;
         $this->logger = $logger;
-        $this->session = $session;
+        $this->session = $requestStack->getMainRequest()->getSession();
     }
 
     /**
