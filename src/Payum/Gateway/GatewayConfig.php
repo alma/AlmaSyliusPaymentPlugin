@@ -22,7 +22,7 @@ class GatewayConfig implements GatewayConfigInterface
 
     public function getFactoryName(): string
     {
-        return array_key_exists('payum.factory_name', $this->config['payum.factory_name']) ?
+        return array_key_exists('payum.factory_name', $this->config) ?
             $this->config['payum.factory_name'] : '';
     }
 
