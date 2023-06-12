@@ -12,6 +12,8 @@ use Alma\SyliusPaymentPlugin\Payum\Gateway\GatewayConfigInterface as AlmaGateway
 use InvalidArgumentException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Model\GatewayConfigInterface;
+use Payum\Core\Security\CryptedInterface;
+use Payum\Core\Security\CypherInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Repository\PaymentMethodRepositoryInterface;
@@ -29,13 +31,19 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
      * @var AlmaBridgeInterface
      */
     private $almaBridge;
+    /**
+     * @var CypherInterface
+     */
+    private $cypher;
 
     public function __construct(
         PaymentMethodRepositoryInterface $paymentMethodRepository,
-        AlmaBridgeInterface $almaBridge
+        AlmaBridgeInterface $almaBridge,
+        CypherInterface $cypher
     ) {
         $this->methodsRepository = $paymentMethodRepository;
         $this->almaBridge = $almaBridge;
+        $this->cypher = $cypher;
     }
 
     /**
@@ -57,7 +65,9 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
 
         foreach ($methods as $method) {
             $gatewayConfig = $method->getGatewayConfig();
-
+            if ($gatewayConfig instanceof CryptedInterface) {
+                $gatewayConfig->decrypt($this->cypher);
+            }
             // Don't mess with non-Alma payment methods
             if (!$gatewayConfig || $this->getGatewayFactoryName($gatewayConfig) !== AlmaGatewayFactory::FACTORY_NAME) {
                 $supportedMethods[] = $method;
@@ -165,7 +175,7 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
 
         // GatewayConfigInterface::getFactoryName is deprecated and the recommended method is to set the factory name on
         // the `payum.factory_name` directly into the gateway's config
-        if (\is_array($config) && array_key_exists('payum.factory_name', $config)) {
+        if (array_key_exists('payum.factory_name', $config)) {
             return strval($config['payum.factory_name']);
         }
 

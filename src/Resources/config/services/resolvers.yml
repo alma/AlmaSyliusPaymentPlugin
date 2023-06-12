@@ -3,6 +3,7 @@ services:
     arguments:
       $paymentMethodRepository: '@sylius.repository.payment_method'
       $almaBridge: '@alma_sylius_payment_plugin.bridge'
+      $cypher: '@payum.dynamic_gateways.cypher'
     tags:
       - name: sylius.payment_method_resolver
         type: alma_payments
