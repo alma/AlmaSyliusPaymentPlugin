@@ -22,17 +22,19 @@ interface GatewayConfigInterface {
 
     public function __construct(ArrayObject $config);
 
-    function getApiMode(): string;
+    public function getFactoryName(): string;
 
-    function getMerchantId(): string;
+    public function getApiMode(): string;
 
-    function getActiveApiKey(): string;
-    function getLiveApiKey(): string;
-    function getTestApiKey(): string;
+    public function getMerchantId(): string;
 
-    function getInstallmentsCount(): int;
+    public function getActiveApiKey(): string;
+    public function getLiveApiKey(): string;
+    public function getTestApiKey(): string;
 
-    function getPaymentFormTemplate(): string;
+    public function getInstallmentsCount(): int;
 
-    function getPaymentPageMode(): string;
+    public function getPaymentFormTemplate(): string;
+
+    public function getPaymentPageMode(): string;
 }

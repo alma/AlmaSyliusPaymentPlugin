@@ -20,46 +20,52 @@ class GatewayConfig implements GatewayConfigInterface
         $this->config = $config;
     }
 
-    function getApiMode(): string
+    public function getFactoryName(): string
+    {
+        return array_key_exists('payum.factory_name', $this->config['payum.factory_name']) ?
+            $this->config['payum.factory_name'] : '';
+    }
+
+    public function getApiMode(): string
     {
         return $this->config[self::CONFIG_API_MODE];
     }
 
-    function getMerchantId(): string
+    public function getMerchantId(): string
     {
         return $this->config[self::CONFIG_MERCHANT_ID];
     }
 
-    function getActiveApiKey(): string
+    public function getActiveApiKey(): string
     {
         return ($this->getApiMode() == AlmaClient::LIVE_MODE ? $this->getLiveApiKey() : $this->getTestApiKey());
     }
 
-    function getLiveApiKey(): string
+    public function getLiveApiKey(): string
     {
         return $this->config[self::CONFIG_LIVE_API_KEY];
     }
 
-    function getTestApiKey(): string
+    public function getTestApiKey(): string
     {
         return $this->config[self::CONFIG_TEST_API_KEY];
     }
 
-    function getInstallmentsCount(): int
+    public function getInstallmentsCount(): int
     {
         $value = $this->config[self::CONFIG_INSTALLMENTS_COUNT];
         if (\is_string($value)) {
             $value = str_replace('c_', '', $value);
         }
-        return (int) $value;
+        return (int)$value;
     }
 
-    function getPaymentFormTemplate(): string
+    public function getPaymentFormTemplate(): string
     {
         return $this->config[self::CONFIG_PAYMENT_FORM_TEMPLATE];
     }
 
-    function getPaymentPageMode(): string
+    public function getPaymentPageMode(): string
     {
         return $this->config[self::CONFIG_PAYMENT_PAGE_MODE];
     }

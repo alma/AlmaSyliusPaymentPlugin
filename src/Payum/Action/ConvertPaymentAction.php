@@ -59,7 +59,7 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
         $config = $this->api->getGatewayConfig();
 
         $token = $request->getToken();
-        $notifyToken = $this->tokenFactory->createNotifyToken($token->getGatewayName(), $token->getDetails());
+        $notifyToken = $this->tokenFactory->createNotifyToken($token !== null ? $token->getGatewayName() : $config->getFactoryName(), $token->getDetails());
 
         $builder = $this->paymentDataBuilder;
         $builder->addBuilder(
