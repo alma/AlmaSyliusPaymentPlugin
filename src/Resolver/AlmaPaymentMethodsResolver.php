@@ -165,7 +165,7 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
 
         // GatewayConfigInterface::getFactoryName is deprecated and the recommended method is to set the factory name on
         // the `payum.factory_name` directly into the gateway's config
-        if (array_key_exists('payum.factory_name', $config)) {
+        if (\is_array($config) && array_key_exists('payum.factory_name', $config)) {
             return strval($config['payum.factory_name']);
         }
 
