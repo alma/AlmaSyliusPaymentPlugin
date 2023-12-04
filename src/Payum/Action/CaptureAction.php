@@ -55,7 +55,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Gateway
 
             default:
                 throw new RuntimeException(
-                    "[Alma] Unknown payment page mode '${paymentPageMode}'. Check gateway config"
+                    "[Alma] Unknown payment page mode '{$paymentPageMode}'. Check gateway config"
                 );
         }
     }
