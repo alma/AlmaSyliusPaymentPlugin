@@ -26,7 +26,7 @@ interface AlmaBridgeInterface
 
     function initialize(ArrayObject $config): void;
 
-    function getGatewayConfig(): GatewayConfig;
+    function getGatewayConfig(): ?GatewayConfig;
 
     function getDefaultClient(?string $mode = null): ?Client;
     static function createClientInstance(string $apiKey, string $mode, LoggerInterface $logger): ?Client;
