@@ -45,6 +45,8 @@ services:
 
   Alma\SyliusPaymentPlugin\Payum\Action\NotifyAction:
     public: true
+    arguments:
+      $requestStack: '@request_stack'
     tags:
       - name: payum.action
         factory: alma_payments
