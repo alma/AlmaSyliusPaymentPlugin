@@ -59,6 +59,19 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
 		$httpRequest = new GetHttpRequest();
 		$this->gateway->execute($httpRequest);
 
+		if (!ArrayObject::ensureArrayObject($httpRequest->headers)->get('x-alma-signature')) {
+			$error = [
+				"error" => true,
+				"message" => 'No signature provided in IPN callback'
+			];
+
+			throw new HttpResponse(
+				json_encode($error),
+				Response::HTTP_INTERNAL_SERVER_ERROR,
+				["content-type" => "application/json"]
+			);
+		}
+
 		/** @var string $signature */
 		$signature = ArrayObject::ensureArrayObject($httpRequest->headers)->get('x-alma-signature')[0];
 		$query = ArrayObject::ensureArrayObject($httpRequest->query);
