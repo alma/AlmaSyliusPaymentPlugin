@@ -28,7 +28,7 @@ class SecurityHelper
 	public function isHmacValidated(string $paymentId, string $key, string $signature): void
 	{
 		 if (!$this->paymentValidator->isHmacValidated($paymentId, $key, $signature)) {
-			 throw new SecurityException("HMAC validation failed for payment $paymentId");
+			 throw new SecurityException("HMAC validation failed for payment $paymentId - API key: $key, signature: $signature");
 		 }
 	}
 
