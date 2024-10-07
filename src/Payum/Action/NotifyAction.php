@@ -57,6 +57,7 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
 	{
 		RequestNotSupportedException::assertSupports($this, $request);
 		$httpRequest = new GetHttpRequest();
+
 		$this->gateway->execute($httpRequest);
 
 		if (!ArrayObject::ensureArrayObject($httpRequest->headers)->get('x-alma-signature')) {
