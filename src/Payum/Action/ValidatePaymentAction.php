@@ -49,9 +49,11 @@ final class ValidatePaymentAction implements ActionInterface, ApiAwareInterface
             $paymentData
         );
 
+        // Convert Alma's orders to an array to save on Sylius' Payment details
+        $paymentData->orders = $this->convertOrderToArrayForDBSave($paymentData->orders);
+
         // Save Alma's payment data on Sylius' Payment details
         $details[AlmaBridgeInterface::DETAILS_KEY_PAYMENT_DATA] = $paymentData;
-
         $payment->setDetails($details);
     }
 
@@ -62,5 +64,29 @@ final class ValidatePaymentAction implements ActionInterface, ApiAwareInterface
     {
         return $request instanceof ValidatePayment
             && $request->getModel() instanceof PaymentInterface;
+    }
+
+    /**
+     * Convert Alma's orders to an array to save on Sylius' Payment details
+     *
+     * @param array $orders
+     * @return array
+     */
+    private function convertOrderToArrayForDBSave(array $orders): array
+    {
+        $arrayOrders = [];
+        foreach ($orders as $order) {
+            $arrayOrders[] = [
+                'comment' => $order->getComment(),
+                'created' => $order->getCreatedAt(),
+                'customer_url' => $order->getCustomerUrl(),
+                'data' => $order->getOrderData(),
+                'id' => $order->getExternalId(),
+                'merchant_reference' => $order->getMerchantReference(),
+                'merchant_url' => $order->getMerchantUrl(),
+                'payment' =>$order->getPaymentId()
+            ];
+        }
+        return $arrayOrders;
     }
 }
