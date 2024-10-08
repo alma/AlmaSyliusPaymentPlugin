@@ -9,28 +9,28 @@ use Alma\SyliusPaymentPlugin\Exception\SecurityException;
 
 class SecurityHelper
 {
-	/**
-	 * @var PaymentValidator
-	 */
-	protected $paymentValidator;
+    /**
+     * @var PaymentValidator
+     */
+    protected $paymentValidator;
 
-	public function __construct()
-	{
-		$this->paymentValidator = new PaymentValidator();
-	}
+    public function __construct(PaymentValidator $paymentValidator)
+    {
+        $this->paymentValidator = $paymentValidator;
+    }
 
-	/**
-	 * @param string $paymentId
-	 * @param string $key
-	 * @param string $signature
-	 * @throws SecurityException
-	 */
-	public function isHmacValidated(string $paymentId, string $key, string $signature): void
-	{
-		 if (!$this->paymentValidator->isHmacValidated($paymentId, $key, $signature)) {
-			 throw new SecurityException("HMAC validation failed for payment $paymentId - signature: $signature");
-		 }
-	}
+    /**
+     * @param string $paymentId
+     * @param string $key
+     * @param string $signature
+     * @throws SecurityException
+     */
+    public function isHmacValidated(string $paymentId, string $key, string $signature): void
+    {
+        if (!$this->paymentValidator->isHmacValidated($paymentId, $key, $signature)) {
+            throw new SecurityException("HMAC validation failed for payment $paymentId - signature: $signature");
+        }
+    }
 
 
 }

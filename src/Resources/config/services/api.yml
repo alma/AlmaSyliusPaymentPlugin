@@ -5,5 +5,8 @@ services:
     arguments:
       $logger: '@logger'
       $paymentDataBuilder: '@alma_sylius_payment_plugin.payment_data_builder'
+      
+  alma_api.payment_validator:
+      class: Alma\API\Lib\PaymentValidator
 
   Alma\SyliusPaymentPlugin\Bridge\AlmaBridgeInterface: '@alma_sylius_payment_plugin.bridge'

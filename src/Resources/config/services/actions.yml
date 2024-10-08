@@ -46,7 +46,8 @@ services:
   Alma\SyliusPaymentPlugin\Payum\Action\NotifyAction:
     public: true
     arguments:
-      $requestStack: '@request_stack'
+        $requestStack: '@request_stack'
+        $securityHelper: '@alma.sylius_payment_plugin.helper.security'
     tags:
       - name: payum.action
         factory: alma_payments

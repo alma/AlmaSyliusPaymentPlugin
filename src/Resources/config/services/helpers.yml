@@ -4,3 +4,8 @@ services:
     arguments:
       $almaBridge: '@alma_sylius_payment_plugin.bridge'
       $eligibilityDataBuilder: '@alma_sylius_payment_plugin.eligibility_data_builder'
+
+  alma.sylius_payment_plugin.helper.security:
+    class: Alma\SyliusPaymentPlugin\Helper\SecurityHelper
+    arguments:
+      $paymentValidator: '@alma_api.payment_validator'
