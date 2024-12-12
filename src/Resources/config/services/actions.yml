@@ -1,6 +1,8 @@
 services:
   Alma\SyliusPaymentPlugin\Payum\Action\StatusAction:
     public: true
+    arguments:
+        $logger: '@logger'
     tags:
       - name: payum.action
         factory: alma_payments
@@ -17,6 +19,8 @@ services:
 
   Alma\SyliusPaymentPlugin\Payum\Action\CaptureAction:
     public: true
+    arguments:
+        $logger: '@logger'
     tags:
       - name: payum.action
         factory: alma_payments
@@ -39,6 +43,8 @@ services:
 
   Alma\SyliusPaymentPlugin\Payum\Action\ValidatePaymentAction:
     public: true
+    arguments:
+        $logger: '@logger'
     tags:
       - name: payum.action
         factory: alma_payments
@@ -46,6 +52,7 @@ services:
   Alma\SyliusPaymentPlugin\Payum\Action\NotifyAction:
     public: true
     arguments:
+        $logger: '@logger'
         $requestStack: '@request_stack'
         $securityHelper: '@alma.sylius_payment_plugin.helper.security'
     tags:

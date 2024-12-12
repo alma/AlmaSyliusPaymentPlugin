@@ -14,6 +14,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\ApiAwareTrait;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 
 
@@ -24,8 +25,9 @@ final class ValidatePaymentAction implements ActionInterface, ApiAwareInterface
     /** @var AlmaBridgeInterface */
     protected $api;
 
-    public function __construct()
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
         $this->apiClass = AlmaBridge::class;
     }
 
@@ -35,6 +37,8 @@ final class ValidatePaymentAction implements ActionInterface, ApiAwareInterface
      */
     public function execute($request): void
     {
+        $this->logger->info('Alma - sTART vALIDATION PAYMENT aCTION', []);
+
         RequestNotSupportedException::assertSupports($this, $request);
 
         /** @var PaymentInterface $payment */
@@ -43,18 +47,25 @@ final class ValidatePaymentAction implements ActionInterface, ApiAwareInterface
 
         /** @var Payment $paymentData */
         $paymentData = null;
+        $this->logger->info('Alma - Api validate payment', []);
+
         $details[AlmaBridgeInterface::DETAILS_KEY_IS_VALID] = $this->api->validatePayment(
             $payment,
             $details[AlmaBridgeInterface::DETAILS_KEY_PAYMENT_ID],
             $paymentData
         );
+        $this->logger->info('Alma - convert to array', []);
 
         // Convert Alma's orders to an array to save on Sylius' Payment details
         $paymentData->orders = $this->convertOrderToArrayForDBSave($paymentData->orders);
 
         // Save Alma's payment data on Sylius' Payment details
         $details[AlmaBridgeInterface::DETAILS_KEY_PAYMENT_DATA] = $paymentData;
+        $this->logger->info('Alma - set payment details', []);
+
         $payment->setDetails($details);
+        $this->logger->info('Alma - END validation payment', []);
+
     }
 
     /**

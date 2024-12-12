@@ -17,6 +17,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
+use Psr\Log\LoggerInterface;
 use RuntimeException;
 
 final class CaptureAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
@@ -29,8 +30,9 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Gateway
      */
     protected $api;
 
-    public function __construct()
+    public function __construct(LoggerInterface $logger)
     {
+        $this->logger = $logger;
         $this->apiClass = AlmaBridge::class;
     }
 
@@ -39,6 +41,8 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Gateway
      */
     public function execute($request): void
     {
+        $this->logger->info('Alma - Start Capture action', []);
+
         RequestNotSupportedException::assertSupports($this, $request);
 
         $config = $this->api->getGatewayConfig();

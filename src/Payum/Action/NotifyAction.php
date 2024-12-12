@@ -20,6 +20,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\Notify;
+use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Payment\Model\PaymentInterface as PaymentInterfaceModel;
 use Symfony\Component\HttpFoundation\Request;
@@ -45,6 +46,10 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
      * @var SecurityHelper
      */
     protected $securityHelper;
+    /**
+     * @var LoggerInterface
+     */
+    private  $logger;
 
 
     /**
@@ -52,8 +57,9 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
      * @param RequestStack $requestStack
      * @param SecurityHelper $securityHelper
      */
-    public function __construct(RequestStack $requestStack, SecurityHelper $securityHelper)
+    public function __construct(LoggerInterface$logger, RequestStack $requestStack, SecurityHelper $securityHelper)
     {
+        $this->logger = $logger;
         $this->apiClass = AlmaBridge::class;
         $this->requestStack = $requestStack;
         $this->securityHelper = $securityHelper;
@@ -64,16 +70,23 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
      */
     public function execute($request): void
     {
+        $this->logger->info('Alma - Start execute', []);
         RequestNotSupportedException::assertSupports($this, $request);
         $httpRequest = $this->getCurrentRequest();
 
+
+
         $payment_id = $this->getQueryPaymentId($httpRequest);
+        $this->logger->info('Alma - Payment id ok ', [$payment_id]);
         $signature = $this->getHeaderSignature($httpRequest);
+        $this->logger->info('Alma - Signature ok ', [$signature]);
 
         $this->checkSignature($payment_id, $signature);
+        $this->logger->info('Alma - checkSignature ok ', []);
 
         /** @var PaymentInterface $payment */
         $payment = $request->getFirstModel();
+        $this->logger->info('Alma - Payment ok ', []);
 
         // Make sure the payment's details include the Alma payment ID
         $details = ArrayObject::ensureArrayObject($request->getModel());
@@ -82,7 +95,9 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
 
         // If payment hasn't been validated yet, validate its status against Alma's payment state
         if (in_array($payment->getState(), [PaymentInterfaceModel::STATE_NEW, PaymentInterfaceModel::STATE_PROCESSING], true)) {
+            $this->logger->info('Alma - I validate Payment in notify', []);
             $this->validatePayment($payment);
+            $this->logger->info('Alma - End i validate Payment in notify', []);
         }
 
         // $details is the request's model here, but we used a copy above passed down the ValidatePaymentAction through
@@ -90,9 +105,12 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
         // Since Payum will use whatever is in the original details model to overwrite the payment's details data, we
         // need to make sure we copy everything that was set on the payment itself back to the NotifyRequest model.
         $details->replace($payment->getDetails());
+        $this->logger->info('Alma - Replace OK ', []);
 
         // Down here means the callback has been correctly handled, regardless of the final payment state
+        $this->logger->info('Alma - Script END', []);
         $this->returnHttpResponse(["success" => true, "state" => $payment->getDetails()[AlmaBridgeInterface::DETAILS_KEY_IS_VALID]]);
+
     }
 
     /**
