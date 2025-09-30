@@ -32,19 +32,13 @@ class CartDataBuilder implements DataBuilderInterface
      * @var CacheManager
      */
     private $liipCacheManager;
-    /**
-     * @var TaxRateResolverInterface
-     */
-    private $taxRateResolver;
 
     public function __construct(
         RouterInterface $router,
         CacheManager $liipCacheManager,
-        TaxRateResolverInterface $taxRateResolver
     ) {
         $this->router = $router;
         $this->liipCacheManager = $liipCacheManager;
-        $this->taxRateResolver = $taxRateResolver;
     }
 
     public function __invoke(array $data, PaymentInterface $payment): array
@@ -93,7 +87,7 @@ class CartDataBuilder implements DataBuilderInterface
                 'url' => $this->getProductUrl($product),
                 'picture_url' => $this->getProductPictureUrl($variant),
                 'requires_shipping' => $variant->isShippingRequired(),
-                'taxes_included' => $this->isTaxIncluded($variant),
+                'taxes_included' => $this->isTaxIncluded(),
             ];
         }, $items));
     }
@@ -172,14 +166,9 @@ class CartDataBuilder implements DataBuilderInterface
         return $url;
     }
 
-    private function isTaxIncluded(ProductVariantInterface $variant): bool
+    private function isTaxIncluded(): bool
     {
-        $taxRate = $this->taxRateResolver->resolve($variant);
-        if ($taxRate === null) {
-            return false;
-        }
-
-        return $taxRate->isIncludedInPrice();
+        return true;
     }
 
     private function getDiscounts(OrderInterface $order): array

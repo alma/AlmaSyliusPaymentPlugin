@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\ShipmentInterface;
 use Sylius\Component\Core\Model\ShippingMethodInterface;
+use Sylius\Component\Registry\PrioritizedServiceRegistryInterface;
 use Sylius\Component\Registry\ServiceRegistryInterface;
 use Sylius\Component\Shipping\Calculator\CalculatorInterface;
 use Sylius\Component\Shipping\Model\ShippingMethodInterface as BaseShippingMethodInterface;
@@ -30,7 +31,7 @@ class ShippingInfoDataBuilder implements DataBuilderInterface
 
     public function __construct(
         ServiceRegistryInterface $calculators,
-        ShippingMethodsResolverInterface $methodsResolver
+        $methodsResolver
     ) {
         $this->methodsResolver = $methodsResolver;
         $this->calculators = $calculators;
@@ -84,7 +85,8 @@ class ShippingInfoDataBuilder implements DataBuilderInterface
         $options = [];
 
         foreach ($shipments as $shipment) {
-            if (!$this->methodsResolver->supports($shipment)) {
+            $resolver = $this->getActualResolver();
+            if (!$resolver->supports($shipment)) {
                 continue;
             }
 
@@ -96,6 +98,24 @@ class ShippingInfoDataBuilder implements DataBuilderInterface
         }
 
         return $options;
+    }
+
+    /**
+     * Récupère le bon resolver selon le type injecté
+     */
+    private function getActualResolver(): ShippingMethodsResolverInterface
+    {
+        if ($this->methodsResolver instanceof ShippingMethodsResolverInterface) {
+            return $this->methodsResolver;
+        }
+
+        // Si c'est un PrioritizedServiceRegistry, récupérer le premier resolver
+        if ($this->methodsResolver instanceof PrioritizedServiceRegistryInterface) {
+            $resolvers = $this->methodsResolver->all();
+            return reset($resolvers); // Premier resolver
+        }
+
+        throw new \InvalidArgumentException('Invalid shipping methods resolver type');
     }
 
     private function buildShippingOption(ShipmentInterface $shipment, BaseShippingMethodInterface $method): array
