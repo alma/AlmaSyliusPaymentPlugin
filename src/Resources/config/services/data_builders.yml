@@ -42,7 +42,7 @@ services:
     arguments:
       $router: '@router'
       $liipCacheManager: '@liip_imagine.cache.manager'
-      $taxRateResolver: '@sylius.tax_rate_resolver'
+#      $taxRateResolver: '@sylius.tax_rate_resolver'
     tags:
       - name: alma_sylius_payment_plugin.payment_data_builder
         id: cart
