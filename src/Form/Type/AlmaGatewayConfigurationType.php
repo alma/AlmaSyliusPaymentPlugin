@@ -122,7 +122,7 @@ final class AlmaGatewayConfigurationType extends AbstractType
 
     public function onPreSetData(FormEvent $event): void
     {
-        $data = ArrayObject::ensureArrayObject($event->getData());
+        $data = ArrayObject::ensureArrayObject($event->getData() ?? []);
 
         // Set default values for the different form fields (useful for gateway creations)
         $data->defaults([
@@ -137,7 +137,7 @@ final class AlmaGatewayConfigurationType extends AbstractType
     public function onPreSubmit(FormEvent $event): void
     {
         $this->errors = [];
-        $data = ArrayObject::ensureArrayObject($event->getData());
+        $data = ArrayObject::ensureArrayObject($event->getData() ?? []);
 
         // Only check the API key for the mode that's been activated by the merchant
         $apiKeyConfigKey = $data[GatewayConfigInterface::CONFIG_API_MODE] === AlmaClient::LIVE_MODE

@@ -75,7 +75,7 @@ class RefundFailedPaymentExtension implements ExtensionInterface
 
         /** @var PaymentInterface $payment */
         $payment = $request->getModel();
-        $details = ArrayObject::ensureArrayObject($payment->getDetails());
+        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?? []);
 
         /** @var Payment|array|null $paymentData */
         $paymentData = $details->get(AlmaBridgeInterface::DETAILS_KEY_PAYMENT_DATA);

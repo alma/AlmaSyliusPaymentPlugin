@@ -40,7 +40,7 @@ final class RenderInPagePaymentAction implements ActionInterface, ApiAwareInterf
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $details = ArrayObject::ensureArrayObject($request->getModel());
+        $details = ArrayObject::ensureArrayObject($request->getModel() ?? []);
         $config = $this->api->getGatewayConfig();
 
         $this->gateway->execute($renderTemplate = new RenderTemplate(
