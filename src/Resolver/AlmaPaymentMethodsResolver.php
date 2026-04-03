@@ -181,7 +181,7 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
     {
         /** @var GatewayConfigInterface $gatewayConfig */
         $gatewayConfig = $method->getGatewayConfig();
-        return ArrayObject::ensureArrayObject($gatewayConfig->getConfig());
+        return ArrayObject::ensureArrayObject($gatewayConfig->getConfig() ?? []);
     }
 
     private function getAlmaGatewayConfig(PaymentMethodInterface $method): AlmaGatewayConfigInterface

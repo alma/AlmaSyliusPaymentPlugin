@@ -43,7 +43,7 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
 
         $httpRequest = new GetHttpRequest();
         $this->gateway->execute($httpRequest);
-        $query = ArrayObject::ensureArrayObject($httpRequest->query);
+        $query = ArrayObject::ensureArrayObject($httpRequest->query ?? []);
 
         /* if notification does not include a payment ID, just return */
         if (!$query->offsetExists(AlmaBridgeInterface::QUERY_PARAM_PID)) {
@@ -51,7 +51,7 @@ class NotifyAction implements ActionInterface, ApiAwareInterface, GatewayAwareIn
         }
 
         // Make sure the payment's details include the Alma payment ID
-        $details = ArrayObject::ensureArrayObject($request->getModel());
+        $details = ArrayObject::ensureArrayObject($request->getModel() ?? []);
         $details[AlmaBridgeInterface::DETAILS_KEY_PAYMENT_ID] = (string) $query[AlmaBridgeInterface::QUERY_PARAM_PID];
         $payment->setDetails($details->getArrayCopy());
 

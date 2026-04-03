@@ -63,7 +63,7 @@ final class RedirectToPaymentPageAction implements ActionInterface, ApiAwareInte
 
         /** @var AlmaClient $alma */
         $alma = $this->api->getDefaultClient();
-        $details = ArrayObject::ensureArrayObject($captureRequest->getModel());
+        $details = ArrayObject::ensureArrayObject($captureRequest->getModel() ?? []);
 
         try {
             $payment = $alma->payments->create((array)$details[AlmaBridgeInterface::DETAILS_KEY_PAYLOAD]);

@@ -45,11 +45,11 @@ final class StatusAction implements ActionInterface, ApiAwareInterface, GatewayA
 
         /** @var PaymentInterface $payment */
         $payment = $request->getModel();
-        $details = ArrayObject::ensureArrayObject($payment->getDetails());
+        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?? []);
 
         $httpRequest = new GetHttpRequest();
         $this->gateway->execute($httpRequest);
-        $query = ArrayObject::ensureArrayObject($httpRequest->query);
+        $query = ArrayObject::ensureArrayObject($httpRequest->query ?? []);
 
         if (
             !$details->offsetExists(AlmaBridgeInterface::DETAILS_KEY_PAYLOAD)
@@ -78,13 +78,13 @@ final class StatusAction implements ActionInterface, ApiAwareInterface, GatewayA
             try {
                 $this->gateway->execute(new ValidatePayment($payment));
             } catch (RequestError $e) {
-                $details = ArrayObject::ensureArrayObject($payment->getDetails());
+                $details = ArrayObject::ensureArrayObject($payment->getDetails() ?? []);
                 $details[AlmaBridgeInterface::DETAILS_KEY_IS_VALID] = false;
                 $payment->setDetails($details->getArrayCopy());
             }
 
             // Refresh details to get validation status
-            $details = ArrayObject::ensureArrayObject($payment->getDetails());
+            $details = ArrayObject::ensureArrayObject($payment->getDetails() ?? []);
         }
 
         /** @var bool|null $isValid */
@@ -103,7 +103,7 @@ final class StatusAction implements ActionInterface, ApiAwareInterface, GatewayA
     // Payment's payload will uselessly occupy database space, so clean it once it's been used
     private function cleanPayload(PaymentInterface $payment): void
     {
-        $details = ArrayObject::ensureArrayObject($payment->getDetails());
+        $details = ArrayObject::ensureArrayObject($payment->getDetails() ?? []);
 
         if (!$details->offsetExists(AlmaBridgeInterface::DETAILS_KEY_PAYLOAD)) {
             return;
