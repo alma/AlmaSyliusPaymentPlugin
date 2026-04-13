@@ -15,9 +15,7 @@ interface GatewayConfigInterface {
     const CONFIG_API_MODE = 'api_mode';
     const CONFIG_INSTALLMENTS_COUNT = 'installments_count';
     const CONFIG_PAYMENT_PAGE_MODE = 'payment_page_mode';
-    const CONFIG_PAYMENT_FORM_TEMPLATE = 'payum.template.payment_form_template';
 
-    const PAYMENT_PAGE_MODE_IN_PAGE = 'payment_page_mode.in_page';
     const PAYMENT_PAGE_MODE_REDIRECT = 'payment_page_mode.redirect';
 
     public function __construct(ArrayObject $config);
@@ -31,8 +29,6 @@ interface GatewayConfigInterface {
     function getTestApiKey(): string;
 
     function getInstallmentsCount(): int;
-
-    function getPaymentFormTemplate(): string;
 
     function getPaymentPageMode(): string;
 }
