@@ -1,0 +1,21 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_admin.payment_method.update.content.form.sections.gateway_configuration.alma_payments':
+            api_mode:
+                template: '@AlmaSyliusPaymentPlugin/admin/payment_method/form/sections/gateway_configuration/api_mode.html.twig'
+                priority: 500
+            live_api_key:
+                template: '@AlmaSyliusPaymentPlugin/admin/payment_method/form/sections/gateway_configuration/live_api_key.html.twig'
+                priority: 400
+            test_api_key:
+                template: '@AlmaSyliusPaymentPlugin/admin/payment_method/form/sections/gateway_configuration/test_api_key.html.twig'
+                priority: 300
+            installments_count:
+                template: '@AlmaSyliusPaymentPlugin/admin/payment_method/form/sections/gateway_configuration/installments_count.html.twig'
+                priority: 200
+            payment_page_mode:
+                template: '@AlmaSyliusPaymentPlugin/admin/payment_method/form/sections/gateway_configuration/payment_page_mode.html.twig'
+                priority: 100
+            merchant_id:
+                template: '@AlmaSyliusPaymentPlugin/admin/payment_method/form/sections/gateway_configuration/merchant_id.html.twig'
+                priority: 0

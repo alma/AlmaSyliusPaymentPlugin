@@ -1,12 +1,20 @@
-$(function() {
-    if ($('.alma.ui').length > 0) {
-        $('.ui.form .item').each(function (i, e) {
-            $(e).find('.ui.radio').on('click', function () {
-                $('.ui.form .item .content .hidden').hide();
-                if ($(e).find('input[type=radio]').is(':checked')) {
-                    $(e).find('.hidden').show();
-                }
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    var plans = document.querySelectorAll('.alma-installment-plan');
+    if (plans.length === 0) return;
+
+    function togglePlans() {
+        plans.forEach(function(plan) {
+            var card = plan.closest('.card, .item, label');
+            if (!card) return;
+            var radio = card.querySelector('input[type=radio]');
+            plan.style.display = (radio && radio.checked) ? '' : 'none';
         });
     }
+
+    var radios = document.querySelectorAll('input[type=radio][name*="method"]');
+    radios.forEach(function(radio) {
+        radio.addEventListener('change', togglePlans);
+    });
+
+    togglePlans();
 });

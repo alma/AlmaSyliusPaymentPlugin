@@ -9,6 +9,7 @@ use Alma\SyliusPaymentPlugin\Bridge\AlmaBridgeInterface;
 use Alma\SyliusPaymentPlugin\Payum\Gateway\AlmaGatewayFactory;
 use Alma\SyliusPaymentPlugin\Payum\Gateway\GatewayConfig;
 use Alma\SyliusPaymentPlugin\Payum\Gateway\GatewayConfigInterface as AlmaGatewayConfigInterface;
+use Alma\SyliusPaymentPlugin\Storage\EligibilityStorage;
 use InvalidArgumentException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Model\GatewayConfigInterface;
@@ -30,12 +31,19 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
      */
     private $almaBridge;
 
+    /**
+     * @var EligibilityStorage
+     */
+    private $eligibilityStorage;
+
     public function __construct(
         PaymentMethodRepositoryInterface $paymentMethodRepository,
-        AlmaBridgeInterface $almaBridge
+        AlmaBridgeInterface $almaBridge,
+        EligibilityStorage $eligibilityStorage
     ) {
         $this->methodsRepository = $paymentMethodRepository;
         $this->almaBridge = $almaBridge;
+        $this->eligibilityStorage = $eligibilityStorage;
     }
 
     /**
@@ -112,8 +120,10 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
             $this->almaBridge->initialize($this->getGatewayConfigData($enabledMethods[0]));
             $eligibilities = $this->almaBridge->getEligibilities($subject, array_keys($installmentsCounts));
 
-            // For each eligible installments count, add all concerned Alma methods into the supportedMethods array
+            // Store eligibilities and filter eligible methods
             foreach ($eligibilities as $eligibility) {
+                $this->eligibilityStorage->store($eligibility->installmentsCount, $eligibility);
+
                 if (!$eligibility->isEligible()) {
                     continue;
                 }
@@ -163,18 +173,11 @@ final class AlmaPaymentMethodsResolver implements PaymentMethodsResolverInterfac
     {
         $config = $gatewayConfig->getConfig();
 
-        // GatewayConfigInterface::getFactoryName is deprecated and the recommended method is to set the factory name on
-        // the `payum.factory_name` directly into the gateway's config
         if (array_key_exists('payum.factory_name', $config)) {
             return strval($config['payum.factory_name']);
         }
 
-        // Fallback, just in case!
-        if (is_callable([$gatewayConfig, 'getFactoryName'])) {
-            return $gatewayConfig->getFactoryName();
-        }
-
-        return null;
+        return $gatewayConfig->getFactoryName();
     }
 
     private function getGatewayConfigData(PaymentMethodInterface $method): ArrayObject

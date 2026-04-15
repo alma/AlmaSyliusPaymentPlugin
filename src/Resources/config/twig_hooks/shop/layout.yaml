@@ -1,0 +1,10 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_shop.base#javascripts':
+            alma_scripts:
+                template: '@AlmaSyliusPaymentPlugin/_partials/_javascript.html.twig'
+                priority: -100
+        'sylius_shop.base#stylesheets':
+            alma_styles:
+                template: '@AlmaSyliusPaymentPlugin/_partials/_stylesheets.html.twig'
+                priority: -100

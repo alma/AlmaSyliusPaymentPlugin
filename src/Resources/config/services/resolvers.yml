@@ -1,8 +1,11 @@
 services:
+  Alma\SyliusPaymentPlugin\Storage\EligibilityStorage: ~
+
   Alma\SyliusPaymentPlugin\Resolver\AlmaPaymentMethodsResolver:
     arguments:
       $paymentMethodRepository: '@sylius.repository.payment_method'
       $almaBridge: '@alma_sylius_payment_plugin.bridge'
+      $eligibilityStorage: '@Alma\SyliusPaymentPlugin\Storage\EligibilityStorage'
     tags:
       - name: sylius.payment_method_resolver
         type: alma_payments
