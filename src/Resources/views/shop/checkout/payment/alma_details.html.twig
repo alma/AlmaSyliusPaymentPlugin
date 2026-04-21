@@ -1,0 +1,39 @@
+{% set method = hookable_metadata.context.method %}
+
+{% if method.gatewayConfig is not null and method.gatewayConfig.factoryName == 'alma_payments' %}
+    {% set installmentsCount = method.gatewayConfig.config.installments_count %}
+    {% set eligibility = alma_get_eligibility(installmentsCount) %}
+
+    <div class="ps-4 mt-2">
+        <img src="{{ asset('/bundles/almasyliuspaymentplugin/img/p' ~ installmentsCount ~ 'x_logo.svg') }}"
+             class="d-inline-block"
+             alt="{{ 'alma_sylius_payment_plugin.checkout.logo_alma'|trans }}" />
+
+        {% if eligibility is not null %}
+            <div class="alma-installment-plan mt-2">
+                <p class="text-muted"><small>{{ 'alma_sylius_payment_plugin.checkout.fast_and_secure_payment_by_credit_card'|trans }}</small></p>
+                {% for count, plan in eligibility.paymentPlan %}
+                    {% set total_amount = plan.total_amount / 100 %}
+                    <div class="d-flex justify-content-between">
+                        <span>
+                            {% if count == 0 %}
+                                {{ 'alma_sylius_payment_plugin.checkout.today'|trans }}
+                            {% else %}
+                                {{ plan.due_date|date("d/m/Y") }}
+                            {% endif %}
+                        </span>
+                        <span>
+                            {{ total_amount|format_currency('EUR') }}
+                            {% if count == 0 and plan.customer_fee > 0 %}
+                                <small class="text-muted">
+                                    ({{ 'alma_sylius_payment_plugin.checkout.including_fees'|trans({'%includingFees%': (plan.customer_fee / 100)|format_currency('EUR')}) }})
+                                </small>
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% if not loop.last %}<hr class="my-1">{% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endif %}

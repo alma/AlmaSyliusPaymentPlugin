@@ -103,9 +103,6 @@ final class AlmaGatewayConfigurationType extends AbstractType
                 [
                     'choices' => [
                         $this->translator->trans(
-                            'alma_sylius_payment_plugin.config.payment_page_mode_in_page'
-                        ) => GatewayConfigInterface::PAYMENT_PAGE_MODE_IN_PAGE,
-                        $this->translator->trans(
                             'alma_sylius_payment_plugin.config.payment_page_mode_redirect'
                         ) => GatewayConfigInterface::PAYMENT_PAGE_MODE_REDIRECT,
                     ],
@@ -122,12 +119,12 @@ final class AlmaGatewayConfigurationType extends AbstractType
 
     public function onPreSetData(FormEvent $event): void
     {
-        $data = ArrayObject::ensureArrayObject($event->getData());
+        $data = ArrayObject::ensureArrayObject($event->getData() ?? []);
 
         // Set default values for the different form fields (useful for gateway creations)
         $data->defaults([
             GatewayConfigInterface::CONFIG_INSTALLMENTS_COUNT => 3,
-            GatewayConfigInterface::CONFIG_PAYMENT_PAGE_MODE => GatewayConfigInterface::PAYMENT_PAGE_MODE_IN_PAGE,
+            GatewayConfigInterface::CONFIG_PAYMENT_PAGE_MODE => GatewayConfigInterface::PAYMENT_PAGE_MODE_REDIRECT,
             GatewayConfigInterface::CONFIG_API_MODE => AlmaClient::TEST_MODE
         ]);
 
@@ -137,7 +134,7 @@ final class AlmaGatewayConfigurationType extends AbstractType
     public function onPreSubmit(FormEvent $event): void
     {
         $this->errors = [];
-        $data = ArrayObject::ensureArrayObject($event->getData());
+        $data = ArrayObject::ensureArrayObject($event->getData() ?? []);
 
         // Only check the API key for the mode that's been activated by the merchant
         $apiKeyConfigKey = $data[GatewayConfigInterface::CONFIG_API_MODE] === AlmaClient::LIVE_MODE

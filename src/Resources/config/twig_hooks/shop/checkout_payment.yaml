@@ -1,0 +1,6 @@
+sylius_twig_hooks:
+    hooks:
+        'sylius_shop.shared.form.select_payment.payment.choice.details':
+            alma_details:
+                template: '@AlmaSyliusPaymentPlugin/shop/checkout/payment/alma_details.html.twig'
+                priority: -100

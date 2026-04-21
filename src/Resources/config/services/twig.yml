@@ -1,0 +1,6 @@
+services:
+  Alma\SyliusPaymentPlugin\Twig\EligibilityExtension:
+    arguments:
+      $eligibilityStorage: '@Alma\SyliusPaymentPlugin\Storage\EligibilityStorage'
+    tags:
+      - { name: twig.extension }
