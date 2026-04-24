@@ -75,7 +75,7 @@
       "dealerdirect/phpcodesniffer-composer-installer": true,
       "phpstan/extension-installer": true,
       "symfony/flex": true,
-      "rector/extension-installer": false
+      "rector/extension-installer": true
     }
   }
 }
