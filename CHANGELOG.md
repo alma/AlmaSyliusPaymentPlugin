@@ -1,5 +1,10 @@
 # Changelog
 
+v2.2.0
+------
+
+- Feat: Compatibility Sylius 1.14
+
 v2.1.0
 ------
 
