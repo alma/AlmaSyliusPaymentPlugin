@@ -41,23 +41,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Gateway
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $config = $this->api->getGatewayConfig();
-
-        $paymentPageMode = $config->getPaymentPageMode();
-        switch ($paymentPageMode) {
-            case GatewayConfigInterface::PAYMENT_PAGE_MODE_IN_PAGE:
-                $this->gateway->execute(new RenderInPagePayment($request->getModel()));
-                break;
-
-            case GatewayConfigInterface::PAYMENT_PAGE_MODE_REDIRECT:
-                $this->gateway->execute(new RedirectToPaymentPage($request));
-                break;
-
-            default:
-                throw new RuntimeException(
-                    "[Alma] Unknown payment page mode '${paymentPageMode}'. Check gateway config"
-                );
-        }
+        $this->gateway->execute(new RedirectToPaymentPage($request));
     }
 
     public function supports($request): bool
