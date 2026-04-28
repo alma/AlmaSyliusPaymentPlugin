@@ -1,13 +1,34 @@
 <p align="center">
     <img src="src/Resources/public/img/alma-logo.svg" alt="logo alma" height="75" style="margin-right:30px" />
-    <img src="https://demo.sylius.com/assets/shop/img/logo.png" height="75" />
+    <img src="src/Resources/public/img/sylius-logo.png" alt="logo sylius" height="75" />
 </p>
 
 <h1 align="center">Sylius Alma Payment Plugin</h1>
 
 <p align="center">Integrate Alma installments and pay later payments with your Sylius shop</p>
 
+## Requirements
+
+### Compatibility
+- **Sylius**: Compatible with versions `1.9.x` to `1.12.x`
+- **PHP**: Compatible with versions `7.3` to `8.0`
+
+Alma currently accepts Euros only; make sure you activate your payment method on channels that use that currency, else
+you won't see it at checkout.
+
+Your Alma payment methods will only show for eligible carts. Eligibility is mainly based on the purchased amount, which
+by default should be between 100€ and 2000€; if you want those limits changed, you can talk to your sales representative
+at Alma, or contact [support@getalma.eu](mailto:support@getalma.eu).
+
 ## Documentation
+
+### Account Setup (Required)
+
+Before configuring the module, you need to create your merchant account on [dashboard.getalma.eu](https://dashboard.getalma.eu).
+
+1. Go to [registration page](https://dashboard.getalma.eu/register) and create an account.
+2. Retrieve your API key from the dashboard.
+3. Use these credentials in the module configuration.
 
 ### Installation
 1. Use Composer to install the plugin:
@@ -53,18 +74,6 @@ $ php bin/console translation:update --dump-messages en AlmaSyliusPaymentPlugin
 $ php bin/console cache:clear
 ```
 
-### Requirements
-
-- PHP version >= 7.3
-- Sylius version >= 1.9.0
-
-Alma currently accepts Euros only; make sure you activate your payment method on channels that use that currency, else 
-you won't see it at checkout.
-
-Your Alma payment methods will only show for eligible carts. Eligibility is mainly based on the purchased amount, which
-by default should be between 100€ and 2000€; if you want those limits changed, you can talk to your sales representative
-at Alma, or contact [support@getalma.eu](mailto:support@getalma.eu).
-
 ### Usage
 1. Go to the Payment Methods admin page and choose to create a new "Alma Payments" method
 
@@ -80,3 +89,6 @@ at Alma, or contact [support@getalma.eu](mailto:support@getalma.eu).
 5. Choose a name for your method in the languages relevant to your shop.
 
 6. You're done! Save the payment method to start accepting instalments payments on your shop!
+
+## Support
+If you encounter any issues or have questions, feel free to contact us at [support@getalma.eu](mailto:support@getalma.eu.).
