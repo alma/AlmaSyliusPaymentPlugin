@@ -24,6 +24,9 @@ services:
 
   Alma\SyliusPaymentPlugin\Payum\Action\RenderInPagePaymentAction:
     public: true
+    arguments:
+      $logger: '@logger'
+      $requestStack: '@request_stack'
     tags:
       - name: payum.action
         factory: alma_payments

@@ -105,6 +105,9 @@ final class AlmaGatewayConfigurationType extends AbstractType
                         $this->translator->trans(
                             'alma_sylius_payment_plugin.config.payment_page_mode_redirect'
                         ) => GatewayConfigInterface::PAYMENT_PAGE_MODE_REDIRECT,
+                        $this->translator->trans(
+                            'alma_sylius_payment_plugin.config.payment_page_mode_in_page'
+                        ) => GatewayConfigInterface::PAYMENT_PAGE_MODE_IN_PAGE,
                     ],
                     'label' => $this->translator->trans('alma_sylius_payment_plugin.config.payment_page_mode_label'),
                 ]

@@ -1,11 +1,118 @@
-<div id="payment-form"></div>
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('fr')|slice(0, 2) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ 'alma_sylius_payment_plugin.in_page.title'|trans }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f5f7f9;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+        }
+        .alma-container { max-width: 560px; margin: 48px auto; padding: 0 16px; }
+        .alma-card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+        .alma-title { text-align: center; font-size: 20px; font-weight: 700; margin: 0 0 24px; }
+        .alma-test-banner {
+            background: #fff7ed; border: 1px solid #fdba74; color: #9a3412;
+            border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; text-align: center; font-size: 14px;
+        }
+        #alma-in-page { margin-bottom: 20px; }
+        #alma-pay-button {
+            width: 100%; background: #fa5022; color: #fff; border: none; border-radius: 8px;
+            padding: 14px 16px; font-size: 16px; font-weight: 700; cursor: pointer; transition: background .15s;
+        }
+        #alma-pay-button:hover { background: #e0461d; }
+        #alma-pay-button:disabled { opacity: .6; cursor: not-allowed; }
+        #alma-in-page-error { color: #dc2626; text-align: center; margin-top: 16px; }
+        .alma-hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="alma-container">
+        <div class="alma-card">
+            <h1 class="alma-title">{{ 'alma_sylius_payment_plugin.in_page.title'|trans }}</h1>
 
-<script src="https://cdn.jsdelivr.net/npm/@alma/fragments@1.x/dist/alma-fragments.umd.js"></script>
-<script>
-    ;(function() {
-        var paymentData = {{ payload | json_encode() | raw }};
-        var fragments = new Alma.Fragments("{{ merchantId }}", { mode: "{{ apiMode }}" });
+            {% if apiMode != 'live' %}
+                <div class="alma-test-banner">{{ 'alma_sylius_payment_plugin.in_page.test_mode'|trans }}</div>
+            {% endif %}
 
-        fragments.createPaymentForm(paymentData).mount('#payment-form');
-    })();
-</script>
+            <div id="alma-in-page"></div>
+
+            <button
+                type="button"
+                id="alma-pay-button"
+                data-payment-id="{{ paymentId }}"
+                data-merchant-id="{{ merchantId }}"
+                data-api-mode="{{ apiMode }}"
+                data-installments-count="{{ installmentsCount }}"
+                data-amount-in-cents="{{ amountInCents }}"
+                data-return-url="{{ returnUrl }}"
+            >
+                {{ 'alma_sylius_payment_plugin.in_page.pay'|trans({'%amount%': (amountInCents / 100)|format_currency('EUR')}) }}
+            </button>
+
+            <p id="alma-in-page-error" class="alma-hidden">
+                {{ 'alma_sylius_payment_plugin.in_page.error'|trans }}
+            </p>
+        </div>
+    </div>
+
+    <script src="{{ asset('bundles/almasyliuspaymentplugin/js/alma-in-page.umd.js') }}"></script>
+    <script>
+        ;(function () {
+            var button = document.getElementById('alma-pay-button');
+            var errorMessage = document.getElementById('alma-in-page-error');
+
+            function showError() {
+                if (errorMessage) errorMessage.classList.remove('alma-hidden');
+                if (button) button.disabled = false;
+            }
+
+            if (!button || typeof Alma === 'undefined' || !Alma.InPage) {
+                showError();
+
+                return;
+            }
+
+            var returnUrl = button.dataset.returnUrl;
+            var paymentId = button.dataset.paymentId;
+
+            function redirectToReturnUrl() {
+                var separator = returnUrl.indexOf('?') === -1 ? '?' : '&';
+                window.location.href = returnUrl + separator + 'pid=' + encodeURIComponent(paymentId);
+            }
+
+            try {
+                var inPage = Alma.InPage.initialize({
+                    merchantId: button.dataset.merchantId,
+                    amountInCents: parseInt(button.dataset.amountInCents, 10),
+                    installmentsCount: parseInt(button.dataset.installmentsCount, 10),
+                    selector: '#alma-in-page',
+                    environment: button.dataset.apiMode === 'live' ? 'LIVE' : 'TEST',
+                    locale: 'FR',
+                });
+
+                button.addEventListener('click', function () {
+                    button.disabled = true;
+                    if (errorMessage) errorMessage.classList.add('alma-hidden');
+
+                    inPage.startPayment({
+                        paymentId: paymentId,
+                        onPaymentSucceeded: redirectToReturnUrl,
+                        onPaymentRejected: redirectToReturnUrl,
+                        onUserCloseModal: function () {
+                            button.disabled = false;
+                        },
+                    });
+                });
+            } catch (error) {
+                console.error('[Alma] In-Page initialization error:', error);
+                showError();
+            }
+        })();
+    </script>
+</body>
+</html>
