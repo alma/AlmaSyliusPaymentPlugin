@@ -1,5 +1,11 @@
 # Changelog
 
+Unreleased
+----------
+
+- Feat: Add In-Page payment support using the `@alma/in-page` SDK (server-side payment creation with `origin: online_in_page`)
+- Fix: Replace deprecated `"${var}"` string interpolation to restore PHP 8.2+ compatibility
+
 v2.2.0
 ------
 

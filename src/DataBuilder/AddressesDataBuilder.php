@@ -19,7 +19,7 @@ class AddressesDataBuilder implements DataBuilderInterface
         $addresses = ['shipping' => $order->getShippingAddress(), 'billing' => $order->getBillingAddress()];
         foreach ($addresses as $type => $address) {
             if ($address !== null) {
-                $data['payment']["${type}_address"] = $this->getAddressData($address);
+                $data['payment']["{$type}_address"] = $this->getAddressData($address);
             }
         }
 

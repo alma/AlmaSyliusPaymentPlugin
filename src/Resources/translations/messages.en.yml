@@ -9,6 +9,7 @@ alma_sylius_payment_plugin:
     installments_count_choice_label: '%installments_count% installments'
     payment_page_mode_label: Payment page mode
     payment_page_mode_redirect: Redirect to Alma (Recommended)
+    payment_page_mode_in_page: Embedded payment (In-Page)
   errors:
     invalid_api_key: API key is invalid
     empty_api_key: Please provide an API key
@@ -26,3 +27,8 @@ alma_sylius_payment_plugin:
     fixed_apr: Fixed APR
     total: Total
     including_fees: "Including fees: %includingFees%"
+  in_page:
+    title: Secure payment
+    pay: 'Pay %amount%'
+    error: "The payment could not be initialized. Please try again or contact us."
+    test_mode: 'Demo mode (test) — no real payment will be made.'
