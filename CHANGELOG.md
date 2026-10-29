@@ -1,5 +1,28 @@
 # Changelog
 
+v2.2.0
+------
+
+- Feat: Compatibility Sylius 1.14
+
+v2.1.0
+------
+
+- Fix: CartBuilder fix call to member function getPath() on null
+
+v2.0.0
+------
+
+- Fix: Compatibility Sylius 1.12
+- Feat: Add installment P10/12X
+- Feat: Display installment's plan in checkout page
+
+v1.3.0
+------
+
+- Support PHP 7.1 and later (tested up to 8.1.12)
+- Support Sylius 1.6.9 and later (tested up to 1.11.10)
+
 v1.2.0
 ------
 

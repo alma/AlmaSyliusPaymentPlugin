@@ -89,6 +89,10 @@ final class AlmaGatewayConfigurationType extends AbstractType
                             ['%installments_count%' => 3]) => 3,
                         $this->translator->trans('alma_sylius_payment_plugin.config.installments_count_choice_label',
                             ['%installments_count%' => 4]) => 4,
+                        $this->translator->trans('alma_sylius_payment_plugin.config.installments_count_choice_label',
+                            ['%installments_count%' => 10]) => 10,
+                        $this->translator->trans('alma_sylius_payment_plugin.config.installments_count_choice_label',
+                            ['%installments_count%' => 12]) => 12,
                     ],
                     'label' => $this->translator->trans('alma_sylius_payment_plugin.config.installments_count_label'),
                 ]
@@ -98,9 +102,6 @@ final class AlmaGatewayConfigurationType extends AbstractType
                 ChoiceType::class,
                 [
                     'choices' => [
-                        $this->translator->trans(
-                            'alma_sylius_payment_plugin.config.payment_page_mode_in_page'
-                        ) => GatewayConfigInterface::PAYMENT_PAGE_MODE_IN_PAGE,
                         $this->translator->trans(
                             'alma_sylius_payment_plugin.config.payment_page_mode_redirect'
                         ) => GatewayConfigInterface::PAYMENT_PAGE_MODE_REDIRECT,
@@ -123,7 +124,7 @@ final class AlmaGatewayConfigurationType extends AbstractType
         // Set default values for the different form fields (useful for gateway creations)
         $data->defaults([
             GatewayConfigInterface::CONFIG_INSTALLMENTS_COUNT => 3,
-            GatewayConfigInterface::CONFIG_PAYMENT_PAGE_MODE => GatewayConfigInterface::PAYMENT_PAGE_MODE_IN_PAGE,
+            GatewayConfigInterface::CONFIG_PAYMENT_PAGE_MODE => GatewayConfigInterface::PAYMENT_PAGE_MODE_REDIRECT,
             GatewayConfigInterface::CONFIG_API_MODE => AlmaClient::TEST_MODE
         ]);
 
