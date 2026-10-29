@@ -1,5 +1,15 @@
 # Changelog
 
+v2.2.0
+------
+
+- Feat: Compatibility Sylius 1.14
+
+v2.1.0
+------
+
+- Fix: CartBuilder fix call to member function getPath() on null
+
 v2.0.0
 ------
 
