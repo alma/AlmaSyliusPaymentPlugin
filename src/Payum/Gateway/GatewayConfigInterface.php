@@ -18,6 +18,7 @@ interface GatewayConfigInterface {
     const CONFIG_PAYMENT_FORM_TEMPLATE = 'payum.template.payment_form_template';
 
     const PAYMENT_PAGE_MODE_REDIRECT = 'payment_page_mode.redirect';
+    const PAYMENT_PAGE_MODE_IN_PAGE = 'payment_page_mode.in_page';
 
     public function __construct(ArrayObject $config);
 

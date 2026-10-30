@@ -9,6 +9,7 @@ alma_sylius_payment_plugin:
     installments_count_choice_label: '%installments_count% échéances'
     payment_page_mode_label: Mode de la page de paiement
     payment_page_mode_redirect: Redirection vers Alma (Recommandé)
+    payment_page_mode_in_page: Paiement intégré (In-Page)
   errors:
     invalid_api_key: Clé d'API invalide
     empty_api_key: La clé d'API doit être renseignée
@@ -26,3 +27,8 @@ alma_sylius_payment_plugin:
     fixed_apr: TAEG fixe
     total: Total
     including_fees: "Dont frais inclus: %includingFees%"
+  in_page:
+    title: Paiement sécurisé
+    pay: 'Payer %amount%'
+    error: "Le paiement n'a pas pu être initialisé. Veuillez réessayer ou nous contacter."
+    test_mode: 'Mode démo (test) — aucun paiement réel ne sera effectué.'
