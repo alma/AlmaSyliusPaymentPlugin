@@ -76,6 +76,16 @@
       "phpstan/extension-installer": true,
       "symfony/flex": true,
       "rector/extension-installer": true
+    },
+    "policy": {
+      "advisories": {
+        "ignore-id": {
+          "PKSA-8kfs-m8zw-ggzs": "api-platform/core 2.7.x is required by Sylius 1.x and has no patched 2.x release",
+          "PKSA-3ncz-km6v-5vjr": "api-platform/core 2.7.x is required by Sylius 1.x and has no patched 2.x release",
+          "PKSA-gs8r-6kz6-pp56": "api-platform/core 2.7.x is required by Sylius 1.x and has no patched 2.x release",
+          "PKSA-gnn4-pxdg-q76m": "api-platform/core 2.7.x is required by Sylius 1.x and has no patched 2.x release"
+        }
+      }
     }
   }
 }
