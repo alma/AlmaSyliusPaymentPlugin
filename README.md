@@ -7,6 +7,8 @@
 
 <p align="center">Integrate Alma installments and pay later payments with your Sylius shop</p>
 
+> ⚠️ **PHP 8.1 and earlier versions are no longer supported by the PHP project and are not recommended by Alma. These versions may contain unpatched security vulnerabilities.**
+
 ## Requirements
 
 ### Compatibility
