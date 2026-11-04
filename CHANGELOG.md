@@ -1,5 +1,10 @@
 # Changelog
 
+v2.3.0
+------
+
+- Feat: Update Readme
+
 v2.2.0
 ------
 
