@@ -36,7 +36,7 @@
     "phpspec/phpspec": "^7.0",
     "phpstan/extension-installer": "^1.0",
     "phpstan/phpstan": "^1.0",
-    "phpstan/phpstan-doctrine": "^1.0",
+    "phpstan/phpstan-doctrine": "^2.0",
     "phpstan/phpstan-strict-rules": "^1.0",
     "phpstan/phpstan-webmozart-assert": "^1.0",
     "phpunit/phpunit": "^9.5 || ^10.0",
