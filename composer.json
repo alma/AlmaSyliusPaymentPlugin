@@ -16,7 +16,7 @@
   "require": {
     "php":  "~7.4 || ~8.0 || ~8.1 || ~8.2 || ~8.3",
     "alma/alma-php-client": ">=1.11.2",
-    "sylius/sylius": ">=v1.9.0 <2.0",
+    "sylius/sylius": "<v2.4",
     "ext-json": "*"
   },
   "require-dev": {
