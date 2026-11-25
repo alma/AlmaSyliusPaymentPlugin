@@ -45,7 +45,7 @@
     "symfony/debug-bundle": "^4.4 || ^5.2 || ^6.0",
     "symfony/dotenv": "^4.4 || ^5.2 || ^6.0",
     "symfony/intl": "^4.4 || ^5.2 || ^6.0",
-    "symfony/web-profiler-bundle": "^4.4 || ^5.2 || ^6.0",
+    "symfony/web-profiler-bundle": "^4.4 || ^5.2 || ^6.0 || ^8.0",
     "vimeo/psalm": "^4.6 || ^5.0"
   },
   "autoload": {
